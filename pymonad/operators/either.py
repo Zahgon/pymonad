@@ -1,8 +1,3 @@
-# --------------------------------------------------------
-# (c) Copyright 2014, 2020 by Jason DeLaat.
-# Licensed under BSD 3-clause licence.
-# --------------------------------------------------------
-""" Adds operators to the Either monad. """
 from typing import Any, TypeVar
 
 import pymonad.either
@@ -13,7 +8,7 @@ S = TypeVar('S') # pylint: disable=invalid-name
 T = TypeVar('T') # pylint: disable=invalid-name
 
 class Either(pymonad.operators.operators.MonadOperators, pymonad.either.Either[S, T]): # pylint: disable=abstract-method
-    """ See pymonad.operators.operators and pymonad.either. """
+    pass
 
 def Left(value: S) -> Either[S, Any]: # pylint: disable=invalid-name
     """ Creates a value of the first possible type in the Either monad. """

@@ -1,8 +1,3 @@
-# --------------------------------------------------------
-# (c) Copyright 2020 by Jason DeLaat.
-# Licensed under BSD 3-clause licence.
-# --------------------------------------------------------
-""" The tools module contains useful functions that don't really belong anywhere else. """
 
 from typing import Any, Callable, List, TypeVar
 
@@ -31,28 +26,9 @@ def _curry_helper(
       the desired number of arguments.
     """
     def _curry_internal(*arguments: List[Any]):
-        """ Handles the actual partial application of curried functions.
-
-        Args:
-          *arguments: a variable number of arguments to be
-             (eventually) supplied to the wrapped function
-             'function_to_curry'
-
-        Returns:
-          Either the result of calling the wrapped function_to_curry
-          with the total accumulated arguments or the result of
-          calling _curry_helper with the new, larger
-          accumulated_arguments list.
-        """
-        all_arguments = accumulated_arguments[:]
-        all_arguments.extend(arguments)
-        if len(all_arguments) >= number_of_arguments: # pylint: disable=no-else-return
-            return function_to_curry(*all_arguments)
-        else:
-            return _curry_helper(number_of_arguments, function_to_curry, all_arguments)
+        pass
     return _curry_internal
 
-# Use _curry_helper to define curry as itself being a curried function.
 curry = _curry_helper(2, lambda n, f: _curry_helper(n, f, []), []) # pylint: disable=invalid-name
 curry.__doc__ = """ Creates a curried function from a normal function of callable object.
 
@@ -84,49 +60,12 @@ Returns:
 """
 
 def identity(value: T) -> T:
-    """ Returns it's input value unchanged. """
-    return value
+    pass
 
 def kleisli_compose(
         function_f: Callable[[R], monad.Monad[S]], function_g: Callable[[S], monad.Monad[T]]
 ) -> Callable[[R], monad.Monad[T]]:
-    """ Composes two Kleisli functions.
-
-    Kleisli functions are functions which take as input a 'bare' value
-    and return an 'embellished' value. For instance, if we have a
-    function f which maps a's to b's, it's type is:
-      f :: a -> b
-
-    Then the corresponding Kleisli function, f_kleisli has the type:
-      f_kleisli :: a -> (b, m)
-
-    The type (b, m) corresponds to the internal representation of the
-    Monad class, so in terms of pymonad, a Kleisli function is one
-    which maps values of type a to values of some sub-class of Monad.
-
-      Example:
-        def fail_if_zero(x):
-            return Nothing if x is zero else Just(x)
-
-        def add1(x):
-            return Just(x + 1)
-
-        new_function = kleisli_compose(add1, fail_if_zero)
-        new_function(0) # returns Just(1)
-        new_function(-1) # returns Nothing
-
-    add1 and fail_if_zero are Kleisli functions and new_function is
-    the function which results from first performing add1 followed by
-    fail_if_zero.
-
-    Args:
-      function_f: a function with type: a -> (b, m)
-      function_g: a function with type: b -> (c, m)
-
-    Returns:
-      A new Kleisli function with type: a -> (c, m)
-    """
-    return lambda a: function_f(a).bind(function_g)
+    pass
 
 @curry(3)
 def monad_from_none_or_value(

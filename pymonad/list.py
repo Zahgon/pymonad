@@ -1,27 +1,3 @@
-# --------------------------------------------------------
-# (c) Copyright 2014, 2020 by Jason DeLaat.
-# Licensed under BSD 3-clause licence.
-# --------------------------------------------------------
-""" Implements the List monad.
-
-The List monad is frequently used to represent calculations with
-non-deterministic results, that is: functions which return more than
-one (possible) result. For example, calculating how chess pieces might
-move.
-
-  Example:
-    def knight_move(position):
-        # calculates a list of every possible square a knight could move
-        # to from it's current position
-        return ListMonad(position_1, position_2, ..., position_N)
-
-    # A list containing every square a knight could reach after 3 moves.
-    three_moves = (List
-                   .insert(initial_position) # However positions are defined.
-                   .then(knight_move)
-                   .then(knight_move)
-                   .then(knight_move))
-"""
 from typing import Any, Callable, Generic, List, TypeVar, Union # pylint: disable=unused-import
 
 import pymonad.monad
@@ -37,41 +13,27 @@ class _List(pymonad.monad.Monad, pymonad.monoid.Monoid, Generic[T]):
 
     @staticmethod
     def identity_element() -> '_List[Any]':
-        return ListMonad()
+        pass
 
     def amap(self: '_List[Callable[[S], T]]', monad_value: '_List[S]') -> '_List[T]':
-        result = []
-        for function in self:
-            for value in monad_value:
-                result.append(function(value))
-        return self.__class__(result, None)
+        pass
 
     def bind(self: '_List[S]', kleisli_function: Callable[[S], '_List[T]']) -> '_List[T]':
-        return self.map(kleisli_function).join()
+        pass
 
     def join(self: '_List[_List[T]]') -> '_List[T]':
-        """ Flattens a nested ListMonad instance one level. """
-        return self.__class__( # pytype: disable=not-callable
-            [element for lists in self for element in lists], None
-        )
+        pass
 
     def map(self: '_List[S]', function: Callable[[S], T]) -> '_List[T]':
-        return self.__class__([function(x) for x in self], None)
+        pass
 
     def then(
             self: '_List[S]', function: Union[Callable[[S], T], Callable[[S], '_List[T]']]
     ) -> '_List[T]':
-        return_value = self.map(function)
-        try:
-            return return_value.join()
-        except (TypeError, AttributeError):
-            return return_value
+        pass
 
     def addition_operation(self, other):
-        if other is pymonad.monoid.IDENTITY: # pylint: disable=no-else-return
-            return self
-        else:
-            return self.__class__((self.value + other.value), None)
+        pass
 
     def __eq__(self, other):
         return self.value == other.value
